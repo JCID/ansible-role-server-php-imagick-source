@@ -1,0 +1,14 @@
+---
+- name:       Verwijderen oude imagick versie
+  yum:        name={{ item }}
+              state=absent
+  with_items:
+   - php56w-pecl-imagick
+   - ImageMagick
+
+- name:       Controleren of imagick al bestaat
+  stat:       path=/etc/php.d/imagick.ini
+  register:   imagick_exists
+
+- include:    install.yml
+  when:       not imagick_exists.stat.exists
